@@ -2,6 +2,7 @@
 using Google.Protobuf;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using static Google.Cloud.Dialogflow.V2.Intent.Types.Message.Types;
 
 namespace AskAddie.Controllers
 {
@@ -20,6 +21,37 @@ namespace AskAddie.Controllers
       return Ok("Response returned");
     }
 
+    // Syntax Emaples
+    private void Examples()
+    {
+      // Use FulfillmentMessages for rich responses
+      WebhookResponse response = new WebhookResponse
+      {
+        // Cannot create a new instance of FulfillmentMessages
+        // Must Add values as instead of assigning value as it is readonly
+        FulfillmentMessages =
+        {
+          new Intent.Types.Message
+          {
+            Card = new Card
+            {
+              Title = "Title",
+              // Same for button, if readonly, add values instead of assinging porperty
+              Buttons =
+              {
+                new Card.Types.Button
+                {
+                  Text = "Button Text",
+                  Postback = "Yolo"
+                }
+              }
+            }
+          }
+        }
+      };
+    }
+
+    // Example flow as shown in Documentation
     [HttpPost]
     public ContentResult DialogAction()
     {
@@ -55,5 +87,7 @@ namespace AskAddie.Controllers
       string responseJson = response.ToString();
       return Content(responseJson, "application/json");
     }
+
+    
   }
 }
