@@ -19,18 +19,17 @@ namespace AskAddie.Controllers
     [HttpPost("report")]
     public IActionResult Report()
     {
-      var parser = new JsonParser(JsonParser.Settings.Default.WithIgnoreUnknownFields(true));
-
       WebhookRequest request;
       using (var reader = new StreamReader(Request.Body))
       {
-        request = parser.Parse<WebhookRequest>(reader);
+        request = JsonParser.Parse<WebhookRequest>(reader);
       }
 
       WebhookResponse response = new WebhookResponse 
       {
-        FulfillmentText = "This works" 
+        FulfillmentText = "This works; does this pause?;" 
       };
+
 
       string responseJson = response.ToString();
       return Content(responseJson, "application/json");
